@@ -16,11 +16,28 @@ public class Package extends PostedItem{
         if(boxes.size() < 2){
             throw new NotEnoughBoxesForPackageException("Packages need at least 2 boxes!");
         }
+        if(!canBoxesGoTogether(boxes)){
+            throw new BoxInWrongPackageException();
+        }
         this.boxes = boxes;
         if(getTotalWeight() > WEIGHT_LIMIT){
             throw new PackageIsToHeavyException("This package is " + (getTotalWeight() - WEIGHT_LIMIT) + " grams over the weight limit!");
         }
         this.setPrice(calculatePrice());
+    }
+
+    private boolean canBoxesGoTogether(List<Box> boxes) {
+        for (Box box : boxes) {
+            if(!boxCanFitInPackage(box)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean boxCanFitInPackage(Box box) {
+        return (this.getSender().equals(box.getSender()) || this.getAddress().equals(box.getAddress()) ||
+                this.getDate().equals(box.getDate()));
     }
 
     public List<Box> getBoxes() {
@@ -32,8 +49,7 @@ public class Package extends PostedItem{
     }
 
     public void addBox(Box box) throws BoxInWrongPackageException, PackageIsToHeavyException {
-        if(!this.getSender().equals(box.getSender()) || !this.getAddress().equals(box.getAddress()) ||
-        !this.getDate().equals(box.getDate())){
+        if(!boxCanFitInPackage(box)){
             throw new BoxInWrongPackageException();
         } else if(getTotalWeight() + box.getWeight() > WEIGHT_LIMIT){
             throw new PackageIsToHeavyException("This package is " + (getTotalWeight() - WEIGHT_LIMIT) + " grams over the weight limit!");
