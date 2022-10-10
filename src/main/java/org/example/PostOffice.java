@@ -33,8 +33,8 @@ public class PostOffice {
     public double getTotalIncomeFromGivenType(String type){
         return switch (type.toLowerCase()) {
             case "letter" -> getTotalIncomeFromLetters();
-            case "small box" -> getTotalIncomeFromSmallBoxes();
-            case "big box" -> getTotalIncomeFromBigBoxes();
+            case "small box" -> getTotalIncomeFromBoxes(BoxType.SMALL);
+            case "big box" -> getTotalIncomeFromBoxes(BoxType.BIG);
             case "package" -> getTotalIncomeFromPackages();
             default -> 0.0;
         };
@@ -50,20 +50,10 @@ public class PostOffice {
         return income;
     }
 
-    private double getTotalIncomeFromBigBoxes() {
+    private double getTotalIncomeFromBoxes(BoxType type) {
         double income = 0.0;
         for (PostedItem item : postedItems) {
-            if(item.getClass().getSimpleName().equals("Box") && ((Box) item).getType() == BoxType.BIG){
-                income += item.getPrice();
-            }
-        }
-        return income;
-    }
-
-    private double getTotalIncomeFromSmallBoxes() {
-        double income = 0.0;
-        for (PostedItem item : postedItems) {
-            if(item.getClass().getSimpleName().equals("Box") && ((Box) item).getType() == BoxType.SMALL){
+            if(item.getClass().getSimpleName().equals("Box") && ((Box) item).getType() == type){
                 income += item.getPrice();
             }
         }
