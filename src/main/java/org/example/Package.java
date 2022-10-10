@@ -20,6 +20,7 @@ public class Package extends PostedItem{
         if(getTotalWeight() > WEIGHT_LIMIT){
             throw new PackageIsToHeavyException("This package is " + (getTotalWeight() - WEIGHT_LIMIT) + " grams over the weight limit!");
         }
+        this.setPrice(calculatePrice());
     }
 
     public List<Box> getBoxes() {
@@ -32,12 +33,13 @@ public class Package extends PostedItem{
 
     public void addBox(Box box) throws BoxInWrongPackageException, PackageIsToHeavyException {
         if(!this.getSender().equals(box.getSender()) || !this.getAddress().equals(box.getAddress()) ||
-        this.getDate() != box.getDate()){
+        !this.getDate().equals(box.getDate())){
             throw new BoxInWrongPackageException();
         } else if(getTotalWeight() + box.getWeight() > WEIGHT_LIMIT){
             throw new PackageIsToHeavyException("This package is " + (getTotalWeight() - WEIGHT_LIMIT) + " grams over the weight limit!");
         } else {
             boxes.add(box);
+            this.setPrice(calculatePrice());
         }
     }
 
@@ -57,5 +59,23 @@ public class Package extends PostedItem{
         }
 
         return price * DISCOUNT_MULTIPLIER;
+    }
+
+    @Override
+    public String toString() {
+        String base = "Package from: " + getSender()
+                + " to: " + getAddress()
+                + " on: " + getDate()
+                + " containing: " + boxes.size() + " boxes."
+                + "\n"
+                + "Boxes: \n";
+        StringBuilder builder = new StringBuilder(base);
+
+        for (Box box : boxes) {
+            builder.append(box.getType()).append(" box, weight: ").append(box.getWeight()).append("\n");
+        }
+
+        builder.append("Price: ").append(getPrice());
+        return builder.toString();
     }
 }

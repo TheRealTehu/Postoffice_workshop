@@ -18,4 +18,5 @@ public enum BoxType {
     public double getMultiplier() {
         return multiplier;
     }
+
 }

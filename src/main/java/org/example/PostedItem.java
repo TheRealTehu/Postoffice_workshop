@@ -12,7 +12,6 @@ public abstract class PostedItem {
         this.address = address;
         this.sender = sender;
         this.date = date;
-        this.price = calculatePrice();
     }
 
     protected abstract double calculatePrice();

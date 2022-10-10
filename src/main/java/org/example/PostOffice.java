@@ -24,22 +24,56 @@ public class PostOffice {
 
     public void listAllPostedItemsOnGivenDate(LocalDate date){
         for (PostedItem item: postedItems) {
-            if(item.getDate() == date){
+            if(item.getDate().equals(date)){
                 System.out.println(item);
             }
         }
     }
 
     public double getTotalIncomeFromGivenType(String type){
-        return switch (type.toLowerCase()){
+        return switch (type.toLowerCase()) {
             case "letter" -> getTotalIncomeFromLetters();
+            case "small box" -> getTotalIncomeFromSmallBoxes();
+            case "big box" -> getTotalIncomeFromBigBoxes();
+            case "package" -> getTotalIncomeFromPackages();
+            default -> 0.0;
         };
+    }
+
+    private double getTotalIncomeFromPackages() {
+        double income = 0.0;
+        for (PostedItem item : postedItems) {
+            if(item.getClass().getSimpleName().equals("Package")){
+                income += item.getPrice();
+            }
+        }
+        return income;
+    }
+
+    private double getTotalIncomeFromBigBoxes() {
+        double income = 0.0;
+        for (PostedItem item : postedItems) {
+            if(item.getClass().getSimpleName().equals("Box") && ((Box) item).getType() == BoxType.BIG){
+                income += item.getPrice();
+            }
+        }
+        return income;
+    }
+
+    private double getTotalIncomeFromSmallBoxes() {
+        double income = 0.0;
+        for (PostedItem item : postedItems) {
+            if(item.getClass().getSimpleName().equals("Box") && ((Box) item).getType() == BoxType.SMALL){
+                income += item.getPrice();
+            }
+        }
+        return income;
     }
 
     public double getTotalIncomeFromLetters(){
         double income = 0.0;
         for (PostedItem item : postedItems) {
-            if(item.getClass().getName().equals("Letter")){
+            if(item.getClass().getSimpleName().equals("Letter")){
                 income += item.getPrice();
             }
         }
@@ -69,6 +103,6 @@ public class PostOffice {
 
     private boolean canGoWithPackage(PostedItem item, Box box) {
         return item.getSender().equals(box.getSender())
-                && item.getAddress().equals(box.getAddress()) && item.getDate() == box.getDate();
+                && item.getAddress().equals(box.getAddress()) && item.getDate().equals(box.getDate());
     }
 }
