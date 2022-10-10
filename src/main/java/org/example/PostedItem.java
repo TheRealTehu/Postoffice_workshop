@@ -6,15 +6,12 @@ public abstract class PostedItem {
     private String address;
     private String sender;
     private LocalDate date;
-    private double price;
 
     public PostedItem(String address, String sender, LocalDate date) {
         this.address = address;
         this.sender = sender;
         this.date = date;
     }
-
-    protected abstract double calculatePrice();
 
     public String getAddress() {
         return address;
@@ -40,11 +37,5 @@ public abstract class PostedItem {
         this.date = date;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
+    public abstract double getPrice();
 }

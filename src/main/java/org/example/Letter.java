@@ -7,11 +7,10 @@ public class Letter extends PostedItem {
 
     public Letter(String address, String sender, LocalDate date) {
         super(address, sender, date);
-        this.setPrice(calculatePrice());
     }
 
     @Override
-    protected double calculatePrice() {
+    public double getPrice() {
         return PRICE_OF_LETTER;
     }
 

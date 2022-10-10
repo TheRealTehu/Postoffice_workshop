@@ -10,7 +10,6 @@ public class Box extends PostedItem{
         super(address, sender, date);
         this.type = type;
         this.weight = weight;
-        this.setPrice(calculatePrice());
     }
 
     public BoxType getType() {
@@ -19,7 +18,6 @@ public class Box extends PostedItem{
 
     public void setType(BoxType type) {
         this.type = type;
-        this.setPrice(calculatePrice());
     }
 
     public double getWeight() {
@@ -28,11 +26,10 @@ public class Box extends PostedItem{
 
     public void setWeight(double weight) {
         this.weight = weight;
-        this.setPrice(calculatePrice());
     }
 
     @Override
-    protected double calculatePrice() {
+    public double getPrice() {
         return type.getBasePrice() + weight * type.getMultiplier();
     }
 

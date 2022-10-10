@@ -23,7 +23,6 @@ public class Package extends PostedItem{
         if(getTotalWeight() > WEIGHT_LIMIT){
             throw new PackageIsToHeavyException("This package is " + (getTotalWeight() - WEIGHT_LIMIT) + " grams over the weight limit!");
         }
-        this.setPrice(calculatePrice());
     }
 
     private boolean canBoxesGoTogether(List<Box> boxes) {
@@ -55,7 +54,6 @@ public class Package extends PostedItem{
             throw new PackageIsToHeavyException("This package is " + (getTotalWeight() - WEIGHT_LIMIT) + " grams over the weight limit!");
         } else {
             boxes.add(box);
-            this.setPrice(calculatePrice());
         }
     }
 
@@ -68,7 +66,7 @@ public class Package extends PostedItem{
     }
 
     @Override
-    protected double calculatePrice() {
+    public double getPrice() {
         double price = 0.0;
         for (Box box : boxes) {
             price += box.getPrice();
